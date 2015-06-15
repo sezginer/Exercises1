@@ -1,0 +1,122 @@
+package main;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class recordImp implements Interfaces {
+
+	String filename = "D:/workspace/Exercise 1 - Mini DB/database.txt";
+	HashMap <Integer,ArrayList<String>> hashmap = new HashMap<Integer, ArrayList<String>>();
+	@Override
+	public int loadData(String filename) {
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ";";
+		int loadedRecords = 0;
+		
+		
+		try {
+	 
+			br = new BufferedReader(new FileReader(filename));
+			while ((line = br.readLine()) != null) {
+				 ArrayList<String> arraylist = new ArrayList<String>();
+					arraylist.add(line.split(cvsSplitBy)[0]);
+					arraylist.add(line.split(cvsSplitBy)[1]);
+					arraylist.add(line.split(cvsSplitBy)[2]);
+					arraylist.add(line.split(cvsSplitBy)[3]);
+					arraylist.add(line.split(cvsSplitBy)[4]);
+					loadedRecords++;
+					hashmap.put(loadedRecords, arraylist);			
+			}
+			
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		if(loadedRecords==0){
+			System.out.println("Couldn't find any data");
+		}	 
+		System.out.println(+loadedRecords+" records are loaded!!!");
+		return 0;
+		
+	}
+
+	@Override
+	public String[] findByName(String firstname, String lastname) {
+
+		for (Map.Entry<Integer, ArrayList<String>> entry : hashmap.entrySet()){
+
+	            if(entry.getValue().contains(firstname) && entry.getValue().contains(lastname) ){
+	                System.out.println("Related record is " + entry.getValue());
+	            }
+	            else
+	            	System.out.println("No related record in database");
+		}
+		
+		return null;
+	}
+
+	@Override
+	public String[] findByDepartment(String department) {
+		for (Map.Entry<Integer, ArrayList<String>> entry : hashmap.entrySet()){
+
+            if(entry.getValue().contains(department)){
+                System.out.println("Related record is " + entry.getValue());
+            }
+            else
+            	System.out.println("No related record in database");
+           
+		}
+	
+	return null;
+	}
+
+	@Override
+	public String[] findByTelephoneNumber(String telephoneNumber) {
+		for (Map.Entry<Integer, ArrayList<String>> entry : hashmap.entrySet()){
+
+            if(entry.getValue().contains(telephoneNumber)){
+                System.out.println("Related record is " + entry.getValue());
+            }
+            else
+            	System.out.println("No related record in database");
+           
+		}
+		return null;
+	}
+
+	@Override
+	public String[] findByEndDate(Date intervalStart, Date IntervalEnd) {
+		for (Map.Entry<Integer, ArrayList<String>> entry : hashmap.entrySet()){
+
+            if(entry.getValue().contains(intervalStart)&&entry.getValue().contains(IntervalEnd)){
+                System.out.println("Related record is " + entry.getValue());
+            }
+            else
+            	System.out.println("No related record in database");
+           
+		}
+		return null;
+	}
+
+}
